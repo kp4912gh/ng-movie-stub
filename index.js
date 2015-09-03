@@ -5,6 +5,7 @@ var express = require("express"),
     favicon = require('serve-favicon'),
     port = process.env.PORT || 2595;
  
+var bookings = [];
 var app = express();
 app.use(logger());
 app.use(bodyParser.json());
@@ -22,6 +23,22 @@ app.get('/', function (req, res) {
 app.get('/movies', function (req, res) {
     var movies = require('./data/movies.json');
     res.json(movies);
+});
+ 
+app.get('/bookings', function (req, res) {
+    res.json(bookings);
+});
+ 
+app.post('/book', function (req, res) {
+    var data = {
+        'qty': req.body.qty,
+        'date': req.body.date,
+        'id': req.body.movie_id,
+        'name': req.body.movie_name
+    };
+    bookings.push(data);
+    // res.render('public/tmpl/bookings.html');
+    res.json(bookings);
 });
  
 app.listen(port);
